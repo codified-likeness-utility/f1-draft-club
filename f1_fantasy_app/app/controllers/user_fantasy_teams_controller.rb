@@ -1,0 +1,2 @@
+class UserFantasyTeamsController < ApplicationController
+end

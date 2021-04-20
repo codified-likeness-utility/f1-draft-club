@@ -1,0 +1,2 @@
+class TeamPicksController < ApplicationController
+end

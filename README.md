@@ -1,2 +1,2 @@
-# f1-draft-club
+# F1 Draft Club
 F1 Racing Fantasy League

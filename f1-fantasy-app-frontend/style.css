@@ -11,9 +11,8 @@
     float: left;
     text-align: center;
     font-family: 'Montserrat Alternates', sans-serif;  
-    opacity: 0.6;
-    background-color: #ff1801;
-    background-image: url("src/images/f1-front-car.jpg");
+    opacity: 1;
+    background-color: #c5c5c523;
     background-repeat: no-repeat;
 }
 
@@ -23,27 +22,30 @@
     height: 100%;
     text-align: center;
     float: right;
-    opacity: 0.8;
-    background-color: black;
+    /* opacity: 0.8; */
+    background-color: rgba(0, 0, 0, 0.753);
 }
 
 .card {
-    display: inline-block;
-    padding: 10px;
-    min-width: 250px;
-    width: 25%;
-    min-height: 350px;
-    height: 80%;
+    display: inline-flex;
+   
     margin-top: 0.6em;
     margin-right: 0.5em;
     margin-bottom: 0.5em;
     background-color: white;
-    border-radius: 25px;
-    font-family: 'Montserrat Alternates', sans-serif;  
+    border-radius: 5px;
+    font-family: 'Montserrat Alternates', sans-serif;
+    font-size: 12px;
 }
 
 .card:hover {
     opacity: 0.8;
+}
+
+.card-img-top {
+  display: inline-flex;
+  width: 60%;
+  height: 60%;
 }
 
 nav ul {
@@ -51,7 +53,7 @@ nav ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #ff1801;
+    background-color: #dd1806ca;
   }
   
   nav li {

@@ -49,8 +49,19 @@ const renderDrivers = (driver) => {
         driverCardBody.append(driverName, driverInfo, addDriver)
 }
 
-const renderTeamDrivers = () => {
+const renderTeamDrivers = (userFantasyTeamDriver) => {
     const teamDriverContainer = document.querySelector('.left-container')
+
+        const teamTable = document.querySelector('.table table-striped')
+            const tableBody = document.querySelector('#tbody')
+                const tableRow = document.createElement('tr')
+                    const tableDataRank = document.createElement('td')
+                        tableDataRank.innerText = `${userFantasyTeamDriver.rank}`
+                    const tableDataFirstName = document.createElement('td')
+                        tableDataFirstName.innerText = `${userFantasyTeamDriver.rank}`
+                    const tableDataLastName = document.createElement('td')
+                        tableDataLastName.innerText = `${userFantasyTeamDriver.rank}`
+                    
 
         const saveTeamDrivers = document.createElement('button')
             saveTeamDrivers.className = '"btn btn-primary"'

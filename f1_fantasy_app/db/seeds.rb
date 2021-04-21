@@ -29,6 +29,14 @@ User.create(name: 'fast-luis', email: 'lozano_22_lalo@yahoo.com', password: 'pas
 UserFantasyTeam.create(name: "Racing Rockets", budget: 100000000, user_id: User.first.id)
 UserFantasyTeam.create(name: "Speedsters", budget: 100000000, user_id: User.second.id)
 
+########## DRIVER IMAGE SEEDS ##########
+
+DriverImage.create(img: , driver_number: , driver_id: )
+DriverImage.create(img: , driver_number: , driver_id: )
+DriverImage.create(img: , driver_number: , driver_id: )
+DriverImage.create(img: , driver_number: , driver_id: )
+DriverImage.create(img: , driver_number: , driver_id: )
+
 ########## DRIVER SEEDS ##########
 
 driver_response = RestClient.get 'http://ergast.com/api/f1/2021/drivers.json'

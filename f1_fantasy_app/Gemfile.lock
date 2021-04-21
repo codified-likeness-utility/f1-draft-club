@@ -175,6 +175,7 @@ PLATFORMS
 
 DEPENDENCIES
   active_model_serializers
+  activesupport
   bootsnap (>= 1.4.4)
   byebug
   jbuilder (~> 2.7)

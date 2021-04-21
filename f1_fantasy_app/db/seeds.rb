@@ -31,11 +31,11 @@ UserFantasyTeam.create(name: "Speedsters", budget: 100000000, user_id: User.seco
 
 ########## DRIVER IMAGE SEEDS ##########
 
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
+# DriverImage.create(img: , driver_number: , driver_id: )
+# DriverImage.create(img: , driver_number: , driver_id: )
+# DriverImage.create(img: , driver_number: , driver_id: )
+# DriverImage.create(img: , driver_number: , driver_id: )
+# DriverImage.create(img: , driver_number: , driver_id: )
 
 ########## DRIVER SEEDS ##########
 

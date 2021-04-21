@@ -23,7 +23,7 @@ const renderDrivers = (driver) => {
             driverCard.setAttribute('value', false)
 
             const driverCardImage = document.createElement('img')
-                driverCardImage.src = 'https://f1imageuploads.s3.amazonaws.com/whitelabel/f1/production/season_4_2021/players/profile/12/Hamilton-Profile.png'
+                driverCardImage.src = `https://f1drivers.s3.us-east-2.amazonaws.com/profile-pics/${driver.familyName}.png`
                 driverCardImage.className = 'card-img-top'
 
             const driverCardBody = document.createElement('div')

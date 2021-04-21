@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Content Loaded')
     fetchDrivers()
-    renderTeamDrivers()
+    fetchUserFantasyTeam()
 });
 
 const fetchDrivers = () => {
@@ -40,8 +40,9 @@ const renderDrivers = (driver) => {
                   const addDriver = document.createElement('button') 
                     addDriver.className =  "btn btn-primary"
                     addDriver.innerText = "Add Driver"
-                    addDriver.addEventListener('click', () => {
-                        console.log("driver added!")
+                    addDriver.addEventListener('click', (e) => {
+                        e.preventDefault()
+                        createTeamPick(driver)
                     })
 
     driverContainer.append(driverCard)
@@ -49,34 +50,56 @@ const renderDrivers = (driver) => {
         driverCardBody.append(driverName, driverInfo, addDriver)
 }
 
-const renderTeamDrivers = (userFantasyTeamDriver) => {
-    const teamDriverContainer = document.querySelector('.left-container')
+const createTeamPick = (driver) => {
+    console.log("made it to create team")
+    console.log(driver)
+    fetch('http://localhost:3000/team_picks', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json',
+            'accept': 'application/json'
+        },
+        body: JSON.stringify({
+            driver_id: driver.id,
+            standing_id: driver.standings[0].id,
+            result_id: driver.results[0].id,
+            user_fantasy_team_id: 1
+        })
+    })
+    .then(response => response.json())
+    .then(newPick => {
+        fetchUserFantasyTeam()
+    })
+}
 
-        const teamTable = document.querySelector('.table table-striped')
-            const tableBody = document.querySelector('#tbody')
-                const tableRow = document.createElement('tr')
-                    const tableDataRank = document.createElement('td')
-                        tableDataRank.innerText = `${userFantasyTeamDriver.rank}`
-                    const tableDataFirstName = document.createElement('td')
-                        tableDataFirstName.innerText = `${userFantasyTeamDriver.rank}`
-                    const tableDataLastName = document.createElement('td')
-                        tableDataLastName.innerText = `${userFantasyTeamDriver.rank}`
-                    
+const fetchUserFantasyTeam = () => {
+    fetch('http://localhost:3000/user_fantasy_teams')
+    .then(response => response.json())
+    .then(teamDrivers => {
+        const tableBody = document.querySelector('.team-body')
+            tableBody.innerHTML = ""
 
-        const saveTeamDrivers = document.createElement('button')
-            saveTeamDrivers.className = '"btn btn-primary"'
-            saveTeamDrivers.innerText = "Save Team"
+        teamDrivers.forEach(teamDriver => {
+            renderTeamDrivers(teamDriver)
+        })
+    })
+}
 
-                saveTeamDrivers.addEventListener('click', () => {
-                    const driverCard = document.querySelector('.card')
-                    // debugger
-                    
-                    if (driverCard.attributes.value.value == "false") {
-                        console.log('deleted')
-                    } else {
-                        console.log('saved to team')
-                    }
-                })
+const renderTeamDrivers = (teamDriver) => {
 
-    teamDriverContainer.append(saveTeamDrivers)
+    teamDriver.drivers.forEach(driver => {
+        debugger
+        const tableBody = document.querySelector('.team-body')
+            const tableRow = document.createElement('tr')
+
+                const tableDataRank = document.createElement('td')
+                    tableDataRank.innerText = ''
+                const tableDataFirstName = document.createElement('td')
+                    tableDataFirstName.innerText = driver.givenName
+                const tableDataLastName = document.createElement('td')
+                    tableDataLastName.innerText = driver.familyName
+            
+    tableBody.append(tableRow)
+        tableRow.append(tableDataRank, tableDataFirstName, tableDataLastName)
+    })
 }

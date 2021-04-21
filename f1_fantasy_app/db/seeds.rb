@@ -16,7 +16,7 @@ Schedule.destroy_all
 Standing.destroy_all
 Result.destroy_all
 UserFantasyTeam.destroy_all
-# TeamPick.destroy_all
+TeamPick.destroy_all
 
 
 ########## USER SEEDS ##########
@@ -24,20 +24,12 @@ UserFantasyTeam.destroy_all
 User.create(name: 'codified-likeness-utility', email: 'mr.daviesian@gmail.com', password: 'password123')
 User.create(name: 'fast-luis', email: 'lozano_22_lalo@yahoo.com', password: 'password456')
 
-########## USER_FANTASY_TEAM SEEDS ##########
+# ########## USER_FANTASY_TEAM SEEDS ##########
 
 UserFantasyTeam.create(name: "Racing Rockets", budget: 100000000, user_id: User.first.id)
 UserFantasyTeam.create(name: "Speedsters", budget: 100000000, user_id: User.second.id)
 
-########## DRIVER IMAGE SEEDS ##########
-
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-DriverImage.create(img: , driver_number: , driver_id: )
-
-########## DRIVER SEEDS ##########
+# ########## DRIVER SEEDS ##########
 
 driver_response = RestClient.get 'http://ergast.com/api/f1/2021/drivers.json'
 data = JSON.parse(driver_response)
@@ -57,7 +49,7 @@ data = JSON.parse(driver_response)
             )
         end
 
-########### SCHEDULE SEEDS ##########
+# ########### SCHEDULE SEEDS ##########
 
 schedule_response = RestClient.get 'http://ergast.com/api/f1/current.json'
 schedule_data = JSON.parse(schedule_response)
@@ -81,22 +73,22 @@ schedules = schedule_data["MRData"]["RaceTable"]["Races"]
 
 standing_response = RestClient.get 'http://ergast.com/api/f1/current/driverStandings.json'
 standing_data = JSON.parse(standing_response)
-    standings = standing_data["MRData"]["StandingsTable"]["StandingsLists"]
+    season_data = standing_data["MRData"]["StandingsTable"]["StandingsLists"]
+    standings = season_data[0]["DriverStandings"]
 
         standings.each do |standing|
-        
-            driver_permanent_number = standing["DriverStandings"][0]["Driver"]["permanentNumber"]
-            @current_driver = Driver.find_by(permanentNumber: driver_permanent_number)
             
+            driver_permanent_number = standing["Driver"]["permanentNumber"]
+            @current_driver = Driver.find_by(permanentNumber: driver_permanent_number)
 
                 Standing.create(
-                    season: standing["season"],
-                    roundNumber: standing["round"],
-                    racePosition: standing["DriverStandings"][0]["position"],
-                    positionText: standing["DriverStandings"][0]["positionText"],
-                    points: standing["DriverStandings"][0]["points"],
-                    wins: standing["DriverStandings"][0]["wins"],
-                    permanentNumber: standing["DriverStandings"][0]["Driver"]["permanentNumber"],
+                    season: season_data[0]["season"],
+                    roundNumber: season_data[0]["round"],
+                    racePosition: standing["position"],
+                    positionText: standing["positionText"],
+                    points: standing["points"],
+                    wins: standing["wins"],
+                    permanentNumber: standing["Driver"]["permanentNumber"],
                     driver_id: @current_driver.id
                 )
             end

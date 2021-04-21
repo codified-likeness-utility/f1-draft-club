@@ -78,6 +78,9 @@ ActiveRecord::Schema.define(version: 2021_04_19_200725) do
 
   create_table "team_picks", force: :cascade do |t|
     t.integer "driver_id"
+    t.integer "standing_id"
+    t.integer "result_id"
+    t.integer "user_fantasy_team_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

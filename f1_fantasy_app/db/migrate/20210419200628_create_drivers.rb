@@ -10,6 +10,7 @@ class CreateDrivers < ActiveRecord::Migration[6.1]
       t.string :dateOfBirth
       t.string :nationality
       t.boolean :turbo_driver
+      t.integer :salary
 
       t.timestamps
     end

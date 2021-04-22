@@ -2,7 +2,7 @@ class UserFantasyTeamsController < ApplicationController
 
     def index
         user_fantasy_teams = UserFantasyTeam.all
-        render json: user_fantasy_teams, include: [drivers: {include: :standings} ]
+        render json: user_fantasy_teams, include: [drivers: {include: :standings}]
     end
 
     def show

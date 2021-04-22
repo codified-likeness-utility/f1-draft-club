@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     console.log('Content Loaded')
     fetchDrivers()
-    fetchUserFantasyTeam()
+    fetchTeamDrivers()
 });
 
 const fetchDrivers = () => {
@@ -15,7 +15,13 @@ const fetchDrivers = () => {
 }
 
 const renderDrivers = (driver) => {
-    const driverContainer = document.querySelector('.right-container')
+
+    const salaryConversion = (driver.salary).toLocaleString('en-US', {
+        style: 'currency',
+        currency: 'USD',
+      })
+
+    const driverContainer = document.querySelector('.driver-container')
 
         const driverCard = document.createElement('div')
             driverCard.className = 'card'
@@ -33,6 +39,9 @@ const renderDrivers = (driver) => {
                     driverName.className = 'card-title'
                     driverName.innerText = `${driver.givenName} ${driver.familyName}`
 
+                const driverSalary = document.createElement('h6')
+                    driverSalary.innerHTML = `<strong>Salary:</strong> ${salaryConversion}`
+
                 const driverInfo = document.createElement('p')
                     driverInfo.className = 'card-text'
                     driverInfo.innerText = 'Information about each driver. This is jus a wuick example to fill up some space.'
@@ -42,17 +51,17 @@ const renderDrivers = (driver) => {
                     addDriver.innerText = "Add Driver"
                     addDriver.addEventListener('click', (e) => {
                         e.preventDefault()
-                        createTeamPick(driver)
+                        createTeamPick(e, driver)
                     })
 
     driverContainer.append(driverCard)
         driverCard.append(driverCardImage, driverCardBody) 
-        driverCardBody.append(driverName, driverInfo, addDriver)
+        driverCardBody.append(driverName, driverSalary, driverInfo, addDriver)
 }
 
-const createTeamPick = (driver) => {
-    console.log("made it to create team")
-    console.log(driver)
+const createTeamPick = (e, driver) => {
+    e.preventDefault()
+    debugger
     fetch('http://localhost:3000/team_picks', {
         method: 'POST',
         headers: {
@@ -63,43 +72,66 @@ const createTeamPick = (driver) => {
             driver_id: driver.id,
             standing_id: driver.standings[0].id,
             result_id: driver.results[0].id,
-            user_fantasy_team_id: 1
+            user_fantasy_team_id: 3
         })
     })
     .then(response => response.json())
     .then(newPick => {
-        fetchUserFantasyTeam()
+        fetchTeamDrivers()
     })
 }
 
-const fetchUserFantasyTeam = () => {
-    fetch('http://localhost:3000/user_fantasy_teams')
+// const fetchUserFantasyTeam = () => {
+//     fetch('http://localhost:3000/user_fantasy_teams')
+//     .then(response => response.json())
+//     .then(teamDrivers => {
+//         const tableBody = document.querySelector('.team-body')
+//             tableBody.innerHTML = ""
+
+//         teamDrivers.forEach(teamDriver => {
+//             console.log(teamDriver)
+//         })
+//     })
+// }
+
+const fetchTeamDrivers = () => {
+    fetch('http://localhost:3000/team_picks')
     .then(response => response.json())
-    .then(teamDrivers => {
+    .then(drivers => {
         const tableBody = document.querySelector('.team-body')
             tableBody.innerHTML = ""
-
-        teamDrivers.forEach(teamDriver => {
-            renderTeamDrivers(teamDriver)
-        })
+        renderTeamDrivers(drivers)
     })
 }
 
-const renderTeamDrivers = (teamDriver) => {
-
-    teamDriver.drivers.forEach(driver => {
-        debugger
+const renderTeamDrivers = (drivers) => {
+    
+    drivers.forEach(driver => {
         const tableBody = document.querySelector('.team-body')
             const tableRow = document.createElement('tr')
+                tableRow.className = `${driver.driverId}`
 
                 const tableDataRank = document.createElement('td')
-                    tableDataRank.innerText = ''
-                const tableDataFirstName = document.createElement('td')
-                    tableDataFirstName.innerText = driver.givenName
-                const tableDataLastName = document.createElement('td')
-                    tableDataLastName.innerText = driver.familyName
-            
+                    tableDataRank.innerText = driver.driver.standings[0].racePosition
+                const tableDataDriverName = document.createElement('td')
+                    tableDataDriverName.innerText = `${driver.driver.givenName} ${driver.driver.familyName}`
+                const tableDataPoints = document.createElement('td')
+                    tableDataPoints.innerText = driver.driver.standings[0].points
+                const driverWins = document.createElement('td')
+                    driverWins.innerText = driver.driver.standings[0].wins
+
+                const deleteButton = document.createElement('button')
+                    deleteButton.className = "btn btn-outline-danger btn-sm"
+                    deleteButton.innerHTML = "Remove"
+                    
+                    deleteButton.addEventListener('click', () => {
+                        fetch(`http://localhost:3000/team_picks/${driver.id}`, {
+                            method: 'DELETE'
+                        })
+                        tableRow.remove()
+                    })
+
     tableBody.append(tableRow)
-        tableRow.append(tableDataRank, tableDataFirstName, tableDataLastName)
+        tableRow.append(tableDataRank, tableDataDriverName, tableDataPoints, driverWins, deleteButton)
     })
 }

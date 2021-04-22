@@ -16,14 +16,23 @@
     background-repeat: no-repeat;
 }
 
-.right-container {
-    min-width: 200px;
-    width: 70%;
-    height: 100%;
-    text-align: center;
-    float: right;
-    /* opacity: 0.8; */
-    background-color: rgba(0, 0, 0, 0.753);
+.driver-container {
+  min-width: 200px;
+  width: 70%;
+  height: 100%;
+  text-align: center;
+  float: right;
+  background-color: rgba(0, 0, 0, 0.753);
+}
+.team-container {
+  min-width: 200px;
+  width: 70%;
+  min-height: 100px;
+  height: 100%;
+  text-align: center;
+  float: right;
+  font-family: 'Montserrat Alternates', sans-serif;
+  background-color: rgba(255, 255, 255, 0.623);
 }
 
 .card {
@@ -46,6 +55,10 @@
   display: inline-flex;
   width: 60%;
   height: 60%;
+}
+
+img {
+  width: 50%;
 }
 
 nav ul {

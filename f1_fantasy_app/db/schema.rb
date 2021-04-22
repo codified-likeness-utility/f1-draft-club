@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 2021_04_19_200725) do
     t.string "dateOfBirth"
     t.string "nationality"
     t.boolean "turbo_driver"
+    t.integer "salary"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

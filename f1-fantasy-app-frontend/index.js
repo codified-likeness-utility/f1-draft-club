@@ -25,7 +25,6 @@ const renderDrivers = (driver) => {
 
         const driverCard = document.createElement('div')
             driverCard.className = 'card'
-            driverCard.style = 'width: 14rem;'
             driverCard.setAttribute('value', false)
 
             const driverCardImage = document.createElement('img')
@@ -54,14 +53,57 @@ const renderDrivers = (driver) => {
                         createTeamPick(e, driver)
                     })
 
+                const toggleDiv = document.createElement('div')
+                    toggleDiv.classList.add("form-check", "form-switch")
+
+                    const turboToggle = document.createElement('input')
+                        turboToggle.className = "form-check-input"
+                        turboToggle.setAttribute("type", "checkbox")                        
+                        turboToggle.id = "flexSwitchCheckDefault"
+                        turboToggle.addEventListener('click', (e) => {
+                            e.preventDefault()
+                            console.log('turbo toggled!')
+                            if (driver.turbo_driver = "false") {
+                                createTurboDriver(driver)   
+                            }
+                            
+
+                        })
+
+                    const label = document.createElement('label')
+                        label.className = "form-check-label"
+                        label.setAttribute("for", "flexSwitchCheckDefault")
+                        label.innerText = "Turbo Driver"
+
+
+
     driverContainer.append(driverCard)
         driverCard.append(driverCardImage, driverCardBody) 
-        driverCardBody.append(driverName, driverSalary, driverInfo, addDriver)
+        driverCardBody.append(driverName, driverSalary, driverInfo, addDriver, toggleDiv)
+        toggleDiv.append(turboToggle, label)
 }
+
+const createTurboDriver = (driver) => {
+    console.log(driver)
+    fetch(`http://localhost:3000/drivers/${driver.id}`, {
+        method: 'PATCH',
+        headers: {
+            'content-body': 'application/json',
+            'accept': 'application/json'
+        },
+        body: JSON.stringify({
+            turbo_driver: true
+        })
+    })
+    .then(response => response.json())
+    .then(data => {console.log(data)})
+
+}
+
 
 const createTeamPick = (e, driver) => {
     e.preventDefault()
-    debugger
+    // debugger
     fetch('http://localhost:3000/team_picks', {
         method: 'POST',
         headers: {
@@ -72,7 +114,7 @@ const createTeamPick = (e, driver) => {
             driver_id: driver.id,
             standing_id: driver.standings[0].id,
             result_id: driver.results[0].id,
-            user_fantasy_team_id: 3
+            user_fantasy_team_id: 1
         })
     })
     .then(response => response.json())

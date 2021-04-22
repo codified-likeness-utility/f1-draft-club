@@ -45,24 +45,7 @@ data = JSON.parse(driver_response)
             )
         end
 
-# ########### SCHEDULE SEEDS ##########
 
-schedule_response = RestClient.get 'http://ergast.com/api/f1/current.json'
-schedule_data = JSON.parse(schedule_response)
-schedules = schedule_data["MRData"]["RaceTable"]["Races"]
-
-    schedules.each do |schedule|
-        Schedule.create(
-            season: schedule["season"],
-            round: schedule["round"],
-            url: schedule["url"],
-            circuitName: schedule["Circuit"]["circuitName"],
-            locality: schedule["Circuit"]["Location"]["locality"],
-            country: schedule["Circuit"]["Location"]["country"],
-            date: schedule["date"],
-            time: schedule["time"]
-        )
-    end
 
     ########### USER_FANTASY_TEAM SEEDS ##########
 
@@ -132,5 +115,24 @@ result_data = JSON.parse(result_respose)
                 )
             end
         end
+
+        # ########### SCHEDULE SEEDS ##########
+
+schedule_response = RestClient.get 'http://ergast.com/api/f1/current.json'
+schedule_data = JSON.parse(schedule_response)
+schedules = schedule_data["MRData"]["RaceTable"]["Races"]
+
+    schedules.each do |schedule|
+        Schedule.create(
+            season: schedule["season"],
+            round: schedule["round"],
+            url: schedule["url"],
+            circuitName: schedule["Circuit"]["circuitName"],
+            locality: schedule["Circuit"]["Location"]["locality"],
+            country: schedule["Circuit"]["Location"]["country"],
+            date: schedule["date"],
+            time: schedule["time"]
+        )
+    end
 
 

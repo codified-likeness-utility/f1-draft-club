@@ -13,9 +13,9 @@ require 'json'
 User.destroy_all
 Driver.destroy_all
 Schedule.destroy_all
+UserFantasyTeam.destroy_all
 Standing.destroy_all
 Result.destroy_all
-UserFantasyTeam.destroy_all
 TeamPick.destroy_all
 
 
@@ -23,11 +23,6 @@ TeamPick.destroy_all
 
 User.create(name: 'codified-likeness-utility', email: 'mr.daviesian@gmail.com', password: 'password123')
 User.create(name: 'fast-luis', email: 'lozano_22_lalo@yahoo.com', password: 'password456')
-
-# ########## USER_FANTASY_TEAM SEEDS ##########
-
-UserFantasyTeam.create(name: "Racing Rockets", budget: 100000000, user_id: User.first.id)
-UserFantasyTeam.create(name: "Speedsters", budget: 100000000, user_id: User.second.id)
 
 # ########## DRIVER SEEDS ##########
 
@@ -45,7 +40,8 @@ data = JSON.parse(driver_response)
                 familyName: driver["familyName"],
                 dateOfBirth: driver["dateOfBirth"],
                 nationality: driver["nationality"],
-                turbo_driver: false
+                turbo_driver: false,
+                salary: rand(5000000...35000000)
             )
         end
 
@@ -65,9 +61,14 @@ schedules = schedule_data["MRData"]["RaceTable"]["Races"]
             country: schedule["Circuit"]["Location"]["country"],
             date: schedule["date"],
             time: schedule["time"]
-            
         )
     end
+
+    ########### USER_FANTASY_TEAM SEEDS ##########
+
+UserFantasyTeam.create(name: "Racing Rockets", budget: 100000000, user_id: User.first.id)
+UserFantasyTeam.create(name: "Speedsters", budget: 100000000, user_id: User.second.id)
+
 
 ########## STANDING SEEDS ##########
 

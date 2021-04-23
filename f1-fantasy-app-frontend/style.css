@@ -10,10 +10,19 @@
     height: 100%;
     float: left;
     text-align: center;
-    font-family: 'Montserrat Alternates', sans-serif;  
-    opacity: 1;
-    background-color: #c5c5c523;
-    background-repeat: no-repeat;
+    font-family: 'Montserrat Alternates', sans-serif;
+}
+
+.left-bottom {
+  background-color: black;
+  text-decoration: white;
+  min-width: 50px;
+  width: 30%;
+  min-height: 775px;
+  height: 100%;
+  float: left;
+  text-align: center;
+  font-family: 'Montserrat Alternates', sans-serif;
 }
 
 .schedule-container {
@@ -37,6 +46,7 @@
   float: right;
   background-color: rgba(0, 0, 0, 0.753);
 }
+
 .team-container {
   min-width: 200px;
   width: 70%;
@@ -50,7 +60,7 @@
 
 .card {
     display: inline-flex;
-   
+    width: 14rem;
     margin-top: 0.6em;
     margin-right: 0.5em;
     margin-bottom: 0.5em;
@@ -60,14 +70,19 @@
     font-size: 12px;
 }
 
-.card:hover {
-    opacity: 0.8;
-}
-
 .card-img-top {
   display: inline-flex;
   width: 60%;
   height: 60%;
+}
+
+.form-switch {
+  margin-top: 0.9em;
+  margin-left: 3.7em;
+}
+
+.form-check-label {
+  margin-left: -3.5em;
 }
 
 img {

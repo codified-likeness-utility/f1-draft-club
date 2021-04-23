@@ -13,6 +13,18 @@
     font-family: 'Montserrat Alternates', sans-serif;
 }
 
+.left-bottom {
+  background-color: black;
+  text-decoration: white;
+  min-width: 50px;
+  width: 30%;
+  min-height: 775px;
+  height: 100%;
+  float: left;
+  text-align: center;
+  font-family: 'Montserrat Alternates', sans-serif;
+}
+
 .driver-container {
   min-width: 200px;
   width: 70%;
@@ -21,6 +33,7 @@
   float: right;
   background-color: rgba(0, 0, 0, 0.753);
 }
+
 .team-container {
   min-width: 200px;
   width: 70%;

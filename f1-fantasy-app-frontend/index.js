@@ -43,7 +43,7 @@ const renderDrivers = (driver) => {
 
                 const driverInfo = document.createElement('p')
                     driverInfo.className = 'card-text'
-                    driverInfo.innerText = 'Information about each driver. This is jus a wuick example to fill up some space.'
+                    driverInfo.innerText = 'Information about each driver. This is jus a quick example to fill up some space.'
 
                   const addDriver = document.createElement('button') 
                     addDriver.className =  "btn btn-primary"
@@ -58,21 +58,27 @@ const renderDrivers = (driver) => {
 
                     const turboToggle = document.createElement('input')
                         turboToggle.className = "form-check-input"
-                        turboToggle.setAttribute("type", "checkbox")                        
-                        turboToggle.id = "flexSwitchCheckDefault"
+                        turboToggle.setAttribute("type", "checkbox")                     
+                        turboToggle.id = "flexSwitchCheckCheck"
                         turboToggle.addEventListener('click', (e) => {
                             e.preventDefault()
                             console.log('turbo toggled!')
-                            if (driver.turbo_driver = "false") {
-                                createTurboDriver(driver)   
+                            if (driver.turbo_driver == false) {
+                                driver.turbo_driver = true
+                                const tdPoints = document.querySelector('#td-points')
+                                    tdPoints.innerHTML = driver.standings[0].points * 2
+                                 
+                            } else {
+                                driver.turbo_driver = false 
                             }
-                            
+
+                            createTurboDriver(driver)                                                                           
 
                         })
 
                     const label = document.createElement('label')
                         label.className = "form-check-label"
-                        label.setAttribute("for", "flexSwitchCheckDefault")
+                        label.setAttribute("for", "flexSwitchCheckCheck")
                         label.innerText = "Turbo Driver"
 
 
@@ -84,26 +90,23 @@ const renderDrivers = (driver) => {
 }
 
 const createTurboDriver = (driver) => {
-    console.log(driver)
     fetch(`http://localhost:3000/drivers/${driver.id}`, {
         method: 'PATCH',
         headers: {
-            'content-body': 'application/json',
+            'content-type': 'application/json',
             'accept': 'application/json'
         },
         body: JSON.stringify({
-            turbo_driver: true
+            turbo_driver: driver.turbo_driver
         })
     })
     .then(response => response.json())
     .then(data => {console.log(data)})
-
 }
 
 
 const createTeamPick = (e, driver) => {
     e.preventDefault()
-    // debugger
     fetch('http://localhost:3000/team_picks', {
         method: 'POST',
         headers: {
@@ -158,6 +161,7 @@ const renderTeamDrivers = (drivers) => {
                 const tableDataDriverName = document.createElement('td')
                     tableDataDriverName.innerText = `${driver.driver.givenName} ${driver.driver.familyName}`
                 const tableDataPoints = document.createElement('td')
+                    tableDataPoints.id = 'td-points'
                     tableDataPoints.innerText = driver.driver.standings[0].points
                 const driverWins = document.createElement('td')
                     driverWins.innerText = driver.driver.standings[0].wins

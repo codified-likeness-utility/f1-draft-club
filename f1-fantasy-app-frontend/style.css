@@ -25,6 +25,19 @@
   font-family: 'Montserrat Alternates', sans-serif;
 }
 
+.schedule-container {
+  min-width: 50px;
+  width: 30%;
+  min-height: 775px;
+  height: 100%;
+  float: inherit;
+  text-align: center;
+  font-family: 'Montserrat Alternates', sans-serif;  
+  opacity: 1;
+  background-color: #c5c5c523;
+  background-repeat: no-repeat;
+}
+
 .driver-container {
   min-width: 200px;
   width: 70%;

@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchTeamDrivers()
     fetchSchedule()
     fetchUserFantasyTeam()
-    // setupEditTeamName()
 });
 
 const fetchDrivers = () => {
@@ -55,6 +54,7 @@ const renderDrivers = (driver) => {
                     addDriver.addEventListener('click', (e) => {
                         e.preventDefault()
                         createTeamPick(e, driver)
+                        
                     })
 
     driverContainer.append(driverCard)
@@ -143,32 +143,24 @@ const renderSchedule = (schedule) => {
 
                 const circuitName = document.createElement('td')
                     circuitName.innerHTML = `<strong>${schedule.circuitName}</strong>`
-
                 const circuitCountry = document.createElement('td')
-                    // circuitCountry.innerHTML = `${schedule.country}`
-
                     const countryFlag = document.createElement('img')
                         countryFlag.src = `https://www.formula1.com/content/dam/fom-website/2018-redesign-assets/Flags%2016x9/${schedule.country.toLowerCase()}-flag.png.transform/2col/image.png`
                         circuitCountry.append(countryFlag)
-
                 const circuitLocality = document.createElement('td')
                     circuitLocality.innerHTML = `${schedule.locality}`
-
                 const circuitRaceDate = document.createElement('td')
                     circuitRaceDate.innerHTML = `${schedule.date}`
-
                 const circuitDetails = document.createElement('button')
                     circuitDetails.className = "btn btn-outline-success btn-sm"
                     circuitDetails.innerHTML = "Map"
                     
                         circuitDetails.addEventListener('click', (e) => {
-                            
                             renderNewCircuitMap(e, schedule)
                         })
 
     tableBody.append(tableRow)
         tableRow.append(circuitName, circuitCountry, circuitLocality, circuitRaceDate, circuitDetails)
-            
 }
 
 const renderNewCircuitMap = (e, schedule) => {
@@ -189,8 +181,29 @@ const fetchUserFantasyTeam = () => {
     .then(response => response.json())
     .then(teams => {
         renderUserFantasyTeam(teams)
+        // teams.forEach(team => {
+        //     updateBudget(team)
+        // })
     })
 }
+
+// const updateBudget = (team) => {
+//     team.drivers.forEach(driver => {
+//         fetch(`http://localhost:3000/user_fantasy_teams/${team.id}`, {
+//             method: 'PATCH',
+//             headers: {
+//                 'content-type': 'application/json',
+//                 'accept': 'application/json'
+//             },
+//             body: JSON.stringify({
+//                 budget: team.budget - driver.salary
+//             })
+//         })
+//         .then(response => response.json())
+//         .then(budget => {
+//         })
+//     })
+// }
 
 const renderUserFantasyTeam = (teams) => {
 
@@ -201,6 +214,7 @@ const driverContainer = document.querySelector('.driver-container')
         teamNameContainer.id = "team-container"
 
         const teamName = document.createElement('h1')
+            teamName.className = "team-name"
             teamName.innerHTML = teams[0].name
 
         const teamForm = document.createElement('div')
@@ -241,11 +255,13 @@ const driverContainer = document.querySelector('.driver-container')
 
         editForm.addEventListener('submit', (e) => {
             e.preventDefault()
-            updateTeamName(e, teams)
+                updateTeamName(e, teams)
+                    editForm.reset()
         })
                     
 
             const remainingBudget = document.createElement('h4')
+                remainingBudget.className = "budget"
                 remainingBudget.innerHTML = `Remaining Budget: ${teams[0].budget}`
 
             const progressBarDiv = document.createElement('div')
@@ -273,31 +289,26 @@ driverContainer.append(teamNameContainer, circuitInfo)
 }
 
 const updateTeamName = (e, teams) => {
-    e.preventDefault()
-    debugger
-    fetch(`http://localhost:3000/user_fantasy_teams/${team[0].id}`, {
+    const firstTeam = teams[0]
+    let driverSalary = 0
+    
+    teams[0].drivers.forEach(driver =>{
+        driverSalary += driver.salary
+    })
+    fetch(`http://localhost:3000/user_fantasy_teams/${firstTeam.id}`, {
         method: 'PATCH',
         headers: {
             'content-type': 'application/json',
             'accept': 'application/json'
         },
         body: JSON.stringify({
-            name: e.target[0].value
+            name: e.target[0].value,
+            budget: teams[0].budget -= driverSalary
         })
     })
-    .then(response)
+    .then(response => response.json())
+    .then(update => {
+        const teamName = document.querySelector('.team-name')
+            teamName.innerHTML = update[0].name
+    })
 }
-// const setupEditTeamName = () => {
-
-//     const teamForm = document.getElementById('team-form')
-//         teamForm.addEventListener('submit', (e) => {
-//             e.preventDefault()
-//             console.log(e)
-//             // editTeamName(teamForm)
-//         })
-// }
-
-// const editTeamName = () => {
-
-//     fetch()
-// }

@@ -11,6 +11,7 @@ class UserFantasyTeamsController < ApplicationController
     end
 
     def update
+        
         user_fantasy_teams = UserFantasyTeam.find_by(id: params[:id])
         user_fantasy_teams = UserFantasyTeam.update(
             name: params[:name],

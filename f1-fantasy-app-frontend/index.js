@@ -74,7 +74,7 @@ const createTeamPick = (e, driver) => {
             driver_id: driver.id,
             standing_id: driver.standings[0].id,
             result_id: driver.results[0].id,
-            user_fantasy_team_id: 7
+            user_fantasy_team_id: 9
         })
     })
     .then(response => response.json())
@@ -182,13 +182,17 @@ const fetchUserFantasyTeam = () => {
     .then(teams => {
         renderUserFantasyTeam(teams)
         // teams.forEach(team => {
-        //     updateBudget(team)
+        //     incrementBudget(team)
         // })
     })
 }
 
-// const updateBudget = (team) => {
+// const incrementBudget = (team) => {
+
+//     let driverSalary = 100000000
 //     team.drivers.forEach(driver => {
+//         driverSalary += driver.salary
+//     })
 //         fetch(`http://localhost:3000/user_fantasy_teams/${team.id}`, {
 //             method: 'PATCH',
 //             headers: {
@@ -196,17 +200,25 @@ const fetchUserFantasyTeam = () => {
 //                 'accept': 'application/json'
 //             },
 //             body: JSON.stringify({
-//                 budget: team.budget - driver.salary
+//                 name: team.name,
+//                 budget: team.budget -= driverSalary
 //             })
 //         })
 //         .then(response => response.json())
 //         .then(budget => {
+//             console.log(budget)
+//             const budgetConversion = (budget[0].budget).toLocaleString('en-US', {
+//                 style: 'currency',
+//                 currency: 'USD',
+//               })
+//             const remainingBudget = document.querySelector('.budget')
+//             remainingBudget.innerHTML = ""
+//             remainingBudget.innerHTML = `Remaining Budget: ${budgetConversion}`
 //         })
-//     })
+    
 // }
 
 const renderUserFantasyTeam = (teams) => {
-
 const driverContainer = document.querySelector('.driver-container')
 
     const teamNameContainer = document.createElement('div')
@@ -227,7 +239,7 @@ const driverContainer = document.querySelector('.driver-container')
                 editButton.setAttribute("role", "button")
                 editButton.setAttribute("aria-expanded", "false")
                 editButton.setAttribute("aria-controls", "collapseFormButton")
-                editButton.innerText = "Edit Team Name"
+                editButton.innerText = "Manage Team"
 
             const editForm = document.createElement('form')
                 editForm.id = "team-form"
@@ -262,19 +274,27 @@ const driverContainer = document.querySelector('.driver-container')
 
             const remainingBudget = document.createElement('h4')
                 remainingBudget.className = "budget"
-                remainingBudget.innerHTML = `Remaining Budget: ${teams[0].budget}`
+
+                const budgetConversion = (teams[0].budget).toLocaleString('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    })
+                remainingBudget.innerHTML = `Remaining Budget: ${budgetConversion}`
+                
 
             const progressBarDiv = document.createElement('div')
                 progressBarDiv.className = "progress"
 
                 const progressBar = document.createElement('div')
+
+                    let percentageBudget = ((teams[0].budget/100000000) *100).toFixed(2) +'%'
                     progressBar.className = "progress-bar bg-success progress-bar-striped"
                     progressBar.setAttribute("role", "progressbar")
-                    progressBar.style = "width: 63%;"
+                    progressBar.style = `width: ${percentageBudget};`
                     progressBar.setAttribute("aria-valuenow", "0")
                     progressBar.setAttribute("aria-valuemin", "0")
                     progressBar.setAttribute("aria-valuemax", "100")
-                    progressBar.innerText = teams[0].budget
+                    progressBar.innerText = percentageBudget
 
         const circuitInfo = document.createElement('div')
             circuitInfo.className = "container p-3 my-3 bg-dark text-white"
@@ -289,12 +309,16 @@ driverContainer.append(teamNameContainer, circuitInfo)
 }
 
 const updateTeamName = (e, teams) => {
+    e.preventDefault()
+
     const firstTeam = teams[0]
+    let budget = 100000000
     let driverSalary = 0
-    
+
     teams[0].drivers.forEach(driver =>{
         driverSalary += driver.salary
     })
+    
     fetch(`http://localhost:3000/user_fantasy_teams/${firstTeam.id}`, {
         method: 'PATCH',
         headers: {
@@ -303,12 +327,25 @@ const updateTeamName = (e, teams) => {
         },
         body: JSON.stringify({
             name: e.target[0].value,
-            budget: teams[0].budget -= driverSalary
+            budget: budget -= driverSalary
         })
     })
     .then(response => response.json())
     .then(update => {
+
         const teamName = document.querySelector('.team-name')
             teamName.innerHTML = update[0].name
+
+            team[0].budget = update[0].budget
+
+            renderUserFantasyTeam()
+            // const budgetConversion = (update[0].budget).toLocaleString('en-US', {
+            //         style: 'currency',
+            //         currency: 'USD',
+            //         })
+
+            //     const remainingBudget = document.querySelector('.budget')
+            //         remainingBudget.innerHTML = ""
+            //         remainingBudget.innerHTML = `Remaining Budget: ${budgetConversion}`
     })
 }

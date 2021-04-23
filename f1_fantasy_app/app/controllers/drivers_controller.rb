@@ -11,7 +11,7 @@ class DriversController < ApplicationController
     end
 
     def update
-        driver = Driver.find(params[:id])
+        driver = Driver.find_by(id: params[:id])
         driver.update(turbo_driver: params[:turbo_driver])
         render json: driver
     end
